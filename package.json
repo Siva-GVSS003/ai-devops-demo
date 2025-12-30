@@ -1,0 +1,16 @@
+{
+  "name": "ai-devops-demo",
+  "version": "1.0.0",
+  "description": "This project demonstrates the integration of AI tools into a DevOps pipeline, showcasing automated testing, deployment, and monitoring capabilities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^30.2.0"
+  }
+}
+
