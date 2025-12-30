@@ -1,0 +1,38 @@
+name: AI PR Summary
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  pr-summary:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get PR changes
+        id: changes
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          SUMMARY=$(git diff origin/${{ github.base_ref }}...HEAD --stat)
+          echo "summary<<EOF" >> $GITHUB_OUTPUT
+          echo "$SUMMARY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Post PR comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## 📝 Summary of Changes\n\n\`\`\`\n${{ steps.changes.outputs.summary }}\n\`\`\``
+            })

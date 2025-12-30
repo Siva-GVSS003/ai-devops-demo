@@ -48,3 +48,50 @@ This repository follows a Git Flow branching model to organize development and r
 - **Branch Protection**: Up-to-date with base branch required
 - **Naming**: Use descriptive titles and reference issue numbers
 - **Description**: Include context and testing details
+
+## CI/CD Pipeline
+
+### Overview
+
+The CI pipeline automatically validates all pull requests and commits to ensure code quality, security, and compliance with branch protection rules.
+
+### Pipeline Stages
+
+#### 1. Automated Tests
+
+- Unit tests must pass on all branches
+- Integration tests run for feature branches
+- Code coverage threshold: minimum 80%
+- Failed tests block merge to protected branches
+
+#### 2. Security Scanning
+
+- Dependency vulnerability scanning with npm audit
+- Static application security testing (SAST)
+- Secret detection to prevent credential leaks
+- Security issues must be resolved before merge
+
+#### 3. Code Quality Checks
+
+- Linting with ESLint/Prettier
+- Code formatting validation
+- Duplicate code detection
+- Quality gates enforce minimum standards
+
+### Branch Enforcement
+
+- **All Branches**: Tests and linting must pass
+- **Protected Branches** (`main`, `develop`):
+  - All status checks required
+  - Security scans must complete successfully
+  - Branch must be up-to-date with base branch
+  - Code review approval mandatory before merge
+
+### Pipeline Failure Resolution
+
+If any pipeline check fails:
+
+1. Review the failure details in the pull request
+2. Fix the issues locally
+3. Push changes to trigger pipeline re-run
+4. Do not force merge on protected branches
